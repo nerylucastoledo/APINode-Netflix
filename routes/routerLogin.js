@@ -7,16 +7,16 @@ routes.post('/register', async (req, res) => {
     const { email, password, confirmPassword } = req.body
 
     if (!email || !password || !confirmPassword) {
-        return res.status(422).json({ "msg": "Preencha todos os campos!"})
+        return res.status(422).json({ msg: "Preencha todos os campos!"})
     }
 
     const verifyEmail = await verifyEmailExists(email)
     if (verifyEmail) {
-        return res.status(422).json({ "msg": "E-mail ja possui uma conta!"})
+        return res.status(422).json({ msg: "E-mail ja possui uma conta!"})
     }
 
     if (password !== confirmPassword) {
-        return res.status(422).json({ "msg": "Senha não são iguais!" })
+        return res.status(422).json({ msg: "Senha não são iguais!" })
     }
 
     const passwordHash = await hashPassword(password)
@@ -28,9 +28,9 @@ routes.post('/register', async (req, res) => {
 
     try {
         await user.save()
-        return res.status(201).json({ "msg": "Usuário criado!" })
+        return res.status(201).json({ sucesso: "Usuário criado!" })
     } catch (error) {
-        return res.status(500).json({ "msg": error })
+        return res.status(500).json({ msg: error })
     }
 })
 
@@ -38,17 +38,17 @@ routes.post('/login', async (req, res) => {
     const { email, password } = req.body
 
     if (!email || !password) {
-        return res.status(422).json({ "msg": "Preencha todos os campos!" })
+        return res.status(422).json({ msg: "Preencha todos os campos!" })
     }
 
     const user = await User.findOne({ email: email })
     if (!user) {
-        return res.status(404).json({ "msg": "E-mail não possui conta!" })
+        return res.status(404).json({ msg: "E-mail não possui conta!" })
     }
 
     const checkPassword = await bcrypt.compare(password, user.password)
     if (!checkPassword) {
-        return res.status(422).json({ "msg": "Senha inválida!" })
+        return res.status(422).json({ msg: "Senha inválida!" })
     }
 
     try {
@@ -63,7 +63,7 @@ routes.post('/login', async (req, res) => {
             "email": user.email
         })
     } catch (error) {
-        return res.status(500).json({ "msg": error })
+        return res.status(500).json({ msg: error })
     }
 })
 

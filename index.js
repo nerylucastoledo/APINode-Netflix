@@ -15,7 +15,7 @@ app.use(
     express.static(path.resolve(__dirname, "..", "tmp", "uploads"))
 )
 
-app.use(require("./routes/routes"))
+app.use(require("./routes/routesAdmin"))
 app.use(require("./routes/routerLogin"))
 
 connectDB()
