@@ -64,11 +64,20 @@ routes.put('/admin/update/:id', multer(multerConfig).single("file"), async (req,
     try {
         await Movie.findOneAndUpdate({ _id: id }, body, { new: true })
         return res.status(200).json({ sucesso: "Filme atualizado!" })
-    } catch( error ){
+    } catch (error){
         return res.status(500).json({ msg: error })
     }
+})
 
+routes.delete('/admin/delete/:id', async (req, res) => {
+    const { id } = req.params
 
+    try {
+        await Movie.deleteOne({ _id: id })
+        return res.status(200).json({ sucesso: "Filme deletado!" })
+    } catch (error) {
+        return res.status(500).json({ msg: error })
+    }
 })
 
 module.exports = routes
